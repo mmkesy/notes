@@ -34,9 +34,6 @@
 
 <script setup>
 
-/*
-  imports
-*/
 
   import { ref } from 'vue'
   import { vAutofocus } from '@/directives/vAutofocus'
