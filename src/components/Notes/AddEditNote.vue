@@ -41,9 +41,6 @@
   import { ref } from 'vue'
   import { vAutofocus } from '@/directives/vAutofocus'
 
-/*
-  props
-*/
 
   const props = defineProps({
     modelValue: {
