@@ -57,9 +57,6 @@
     }
   })
 
-/*
-  emits
-*/
 
   const emit = defineEmits(['update:modelValue'])
 
