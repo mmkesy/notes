@@ -5,18 +5,18 @@
         <li
           :class= "{'is-active': !register }"
         >
-          <a @click.prevent="register=false">Login</a>
+          <a @click.prevent="register=false">Logowanie</a>
         </li>
         <li
           :class= "{'is-active': register }"
         >
-          <a @click.prevent="register=true">Register</a>
+          <a @click.prevent="register=true">Rejestracja</a>
         </li>
       </ul>
     </div>
     <div class="card auth-form">
       <div class="card-content">
-        <div class="title has-text-centered">{{ formTitle }}</div>
+        <div class="subtitle is-6 has-text-right">{{ formTitle }}</div>
         
         <form
           @submit.prevent="onSubmit"
@@ -34,7 +34,7 @@
           </div>
 
           <div class="field">
-          <label class="label">Password</label>
+          <label class="label">Hasło</label>
           <div class="control">
             <input
               v-model="credentials.password"
@@ -48,7 +48,7 @@
           <div class="field is-grouped is-grouped-right">
           <p class="control">
             <button class="button is-primary">
-              {{ formTitle }}
+              {{ ButtonOkTitle }}
             </button>
           </p>
           </div>
@@ -68,7 +68,11 @@
   const register = ref(false)
 
   const formTitle = computed (()=> { 
-    return register.value ? 'Register' : 'Login'
+    return register.value ? '' : ''
+  })
+
+  const ButtonOkTitle = computed (()=> { 
+    return register.value ? 'Dalej' : 'Dalej'
   })
 
   const onSubmit = () => {

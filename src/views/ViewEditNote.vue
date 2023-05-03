@@ -2,26 +2,28 @@
   <div class="edit-note">
     <AddEditNote
       v-model="noteContent"
-      bgColor="link"
+      bgColor="info"
       placeholder="Edit note"
-      label="Edit Note"
+      label="pytanie 1"
       ref="addEditNoteRef"
     >
       <template #buttons>
+        <div class="buttons">
         <button
           @click="$router.back()"
-          class="button is-link is-light mr-2"
+          class="button is-light has-background-grey-lighter mr-100"
         >
           Cancel
         </button>
         <button
           @click="handleSaveClicked"
-          class="button is-link has-background-link"
+          class="button is-link has-background-primary "
           :disabled="!noteContent"
         >
           Save Note
         </button>
-      </template>
+      </div>
+     </template>
     </AddEditNote>
   </div>
 </template>

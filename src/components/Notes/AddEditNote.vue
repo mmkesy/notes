@@ -1,15 +1,15 @@
 <template>
   <div
-    class="card p-4 mb-5"
-    :class="`has-background-${ bgColor }-dark`"
+    class="card p-1 mb-5"
+    :class="`has-background-${ bgColor }-light`"
   >
     <label
       v-if="label"
-      class="label has-text-white"
+      class="label has-text-grey-light"
     >
       {{ label }}
     </label>
-
+   <!--
     <div class="field">
       <div class="control">
         <textarea
@@ -19,17 +19,37 @@
           :placeholder="placeholder"
           ref="textareaRef"
           maxlength="100"
-          v-autofocus
         />
       </div>
+    </div>
+  -->  
+  <!--
+        @change="onChange"
+        @input="onInput"
+        @ready="onReady"
+  -->     
+    <div class="field">
+      <div class="control">
+        <Codemirror
+        :value="modelValue"
+        :options="cmOptions"
+        :placeholder="placeholder"
+        ref="cmRef"   
+        @change="onChange"
+        @input="onInput"
+        v-autofocus
+        >
+        </Codemirror>
+      </div>  
+    </div>  
+  
     </div>
 
     <div class="field is-grouped is-grouped-right">
       <div class="control">
         <slot name="buttons" />
       </div>
-    </div>
-  </div>
+    </div>  
 </template>
 
 <script setup>
@@ -37,6 +57,9 @@
 
   import { ref } from 'vue'
   import { vAutofocus } from '@/directives/vAutofocus'
+  import "codemirror/mode/sql/sql.js"
+  import "codemirror/addon/edit/matchbrackets.js"
+  import Codemirror from "codemirror-editor-vue3"
 
 
   const props = defineProps({
@@ -46,11 +69,11 @@
     },
     bgColor: {
       type: String,
-      default: 'success'
+      default: 'info'
     },
     placeholder: {
       type: String,
-      default: 'Type something...'
+      default: 'select...'
     },
     label: {
       type: String
@@ -60,18 +83,52 @@
 
   const emit = defineEmits(['update:modelValue'])
 
-/*
-  focus textarea
+  
+
+ /* 
+  codemirror editor
 */
+  
+  const cmOptions = {
+    mode: "sql",
+    matchBrackets: true
+  }
 
-  const textareaRef = ref(null)
+  const cmRef = ref(null)
 
-  const focusTextarea = () => {
-    textareaRef.value.focus()
+  const onChange = (val, cm) => {
+        //console.log(val)
+        emit('update:modelValue', cm.getValue())
+  }
+
+  const onInput = (val) => {
+        //console.log(val)
+  }
+
+
+  const focusCodeMirror = () => {
+    cmRef.value.focus()
   }
 
   defineExpose({
-    focusTextarea
+    focusCodeMirror
   })
 
+
 </script>
+<style>
+.codemirror-container {
+  font-size: 1.3em;
+  
+}
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+  font-family: Monospace !important;
+}
+.CodeMirror-gutter-wrapper {
+  font-family: Monospace !important;
+  font-size : 0.6em;
+}
+.cm-s-default .cm-comment {
+    color: #ccc;
+}
+</style>

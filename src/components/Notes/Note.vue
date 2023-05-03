@@ -4,7 +4,7 @@
   >
     <div class="card-content">
       <div class="content">
-        {{ note.content }}
+        <pre>{{ note.content }}</pre>
         <div class="columns is-mobile has-text-grey-light mt-2">
           <small class="column" > {{ dateFormated }}</small>
           <small class="column has-text-right" >{{ characterLength }}</small>

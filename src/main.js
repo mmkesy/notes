@@ -1,5 +1,6 @@
 import { createApp, markRaw } from 'vue'
 import { createPinia } from 'pinia'
+import { InstallCodemirro } from "codemirror-editor-vue3"  
 import App from './App.vue'
 import router from '@/router'
 
@@ -12,4 +13,5 @@ pinia.use(({ store }) => {
 createApp(App)
   .use(pinia)
   .use(router)
+  .use(InstallCodemirro) 
   .mount('#app')

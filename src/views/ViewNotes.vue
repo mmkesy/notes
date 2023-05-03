@@ -3,14 +3,14 @@
 
     <AddEditNote
       v-model="newNote"
-      placeholder="Add a new note"
+      placeholder=""
       ref="addEditNoteRef"
     >
       <template #buttons>
         <button
           @click="addNote"
           :disabled="!newNote"
-          class="button is-link has-background-success"
+          class="button is-link has-background-info-dark"
         >
           Add New Note
         </button>
@@ -51,7 +51,7 @@
   import Note from '@/components/Notes/Note.vue'
   import AddEditNote from '@/components/Notes/AddEditNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
-  import { useWatchCharacters } from '@/use/useWatchCharacters'
+  //import { useWatchCharacters } from '@/use/useWatchCharacters'
 
 /*
   store
@@ -70,13 +70,14 @@
   const addNote = () => {
     storeNotes.addNote(newNote.value)
     newNote.value = ''
-    addEditNoteRef.value.focusTextarea()
+    addEditNoteRef.value.focusCodeMirror()
+
   }
 
 /*
   watch characters
 */
 
-  useWatchCharacters(newNote)
+  //useWatchCharacters(newNote)
 
 </script>
