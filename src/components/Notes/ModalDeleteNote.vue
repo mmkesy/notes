@@ -78,6 +78,7 @@
 
   const closeModal = () => {
     emit('update:modelValue', false)
+    console.log(' close modal...')
   }
 
 /*

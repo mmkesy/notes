@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.0.2",
+    "axios": "^1.4.0",
     "codemirror": "^5.65.13",
     "codemirror-editor-vue3": "^2.3.0",
     "firebase": "^9.19.1",

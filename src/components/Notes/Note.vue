@@ -40,7 +40,7 @@
   imports
 */
 
-  import { computed, reactive } from 'vue'
+  import { computed, reactive, onUpdated } from 'vue'
   import { useDateFormat } from '@vueuse/core'
   import ModalDeleteNote from '@/components/Notes/ModalDeleteNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
@@ -83,6 +83,14 @@
 
   const modals = reactive({
     deleteNote: false
+  })
+
+  const emit = defineEmits(['deleteCancelled'])
+
+  onUpdated(() => {
+    console.log('Note onUpdated...',modals.deleteNote)
+    if (!modals.deleteNote) 
+      emit('deleteCancelled','')
   })
 
 </script>

@@ -55,7 +55,7 @@
 <script setup>
 
 
-  import { ref } from 'vue'
+  import { onActivated, onMounted, onUpdated, ref } from 'vue'
   import { vAutofocus } from '@/directives/vAutofocus'
   import "codemirror/mode/sql/sql.js"
   import "codemirror/addon/edit/matchbrackets.js"
@@ -107,11 +107,24 @@
 
 
   const focusCodeMirror = () => {
-    cmRef.value.focus()
+    cmRef.value.cminstance.focus()
   }
 
   defineExpose({
     focusCodeMirror
+  })
+
+  /*
+    hooks
+  */
+ 
+  onMounted(() => {
+    console.log('AddEditNote onMounted..')
+    cmRef.value.cminstance.focus()
+  })
+
+  onActivated(()=>{
+    console.log('AddEditNote on Activated..')
   })
 
 
