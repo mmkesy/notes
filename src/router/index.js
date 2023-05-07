@@ -4,6 +4,10 @@ import ViewNotes from '@/views/ViewNotes.vue'
 import ViewEditNote from '@/views/ViewEditNote.vue'
 import ViewStats from '@/views/ViewStats.vue'
 import ViewAuth from '@/views/ViewAuth.vue'
+import { auth } from '@/js/firebase'
+
+
+
 
 const routes = [
   {
@@ -35,7 +39,9 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from) => {
-  const storeAuth = useStoreAuth() 
+
+  const storeAuth = useStoreAuth()
+  const user = await new Promise((resolve, reject) => auth.onAuthStateChanged(resolve, reject)) // czekanie na zakonczenie inicjalizacji logowania
   if (!storeAuth.user.id && to.name !== 'auth') { // nie zalogowany user nie moze wchodzic na inne strony poza login albo register
     return { name: 'auth' }
   }

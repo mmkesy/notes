@@ -1,5 +1,6 @@
-<template>
-  <div class="auth">
+<template> 
+  <div class="auth"
+  >
     <div class="tabs is-centered">
       <ul>
         <li
@@ -61,7 +62,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, reactive } from 'vue'
+  import { ref, computed, reactive} from 'vue'
   import { useStoreAuth } from '@/stores/storeAuth'
 
   const storeAuth = useStoreAuth()
@@ -89,7 +90,6 @@
     email: '',
     password: ''
   })
-
 </script>
 <style>
 .auth-form {
