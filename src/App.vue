@@ -26,4 +26,5 @@
 
 <style>
 @import 'bulma/css/bulma.min.css';
+@import '@cityssm/bulma-sticky-table/bulma-with-sticky-table.css'
 </style>

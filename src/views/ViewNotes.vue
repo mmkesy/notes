@@ -24,7 +24,29 @@
       </template>
     </AddEditNote>
 
-    
+    <div class="table-container">
+      <table class="table is-fullwidth is-scrollable has-sticky-header">
+        <!-- Your table content -->
+        
+        <thead>
+          <tr>
+            <th v-for="field in sqlResultFields" :key="field">
+              {{ field }}
+            </th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr v-for="item in sqlData" :key="item">
+            <td v-for="key in item">
+              {{ key }}
+            </td>
+          </tr>
+        </tbody>
+      
+      </table>
+    </div>
+
     <progress
       v-if="!storeNotes.notesLoaded" 
       class="progress is-large is-info"
@@ -55,7 +77,7 @@
   imports
 */
 
-  import { onActivated, onMounted, onUpdated, ref } from 'vue'
+  import { onActivated, onMounted, onUpdated, ref, reactive, computed } from 'vue'
   import Note from '@/components/Notes/Note.vue'
   import AddEditNote from '@/components/Notes/AddEditNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
@@ -76,20 +98,59 @@
   const newNote = ref('')
   const addEditNoteRef = ref(null)
 
+  const sqlData = ref(
+    [{"id":"1","imie":"Zygmunt","nazwisko":"Bajkowski"},
+     {"id":"2","imie":"Kunegunda","nazwisko":"Esflubowska"},
+     {"id":"3","imie":"Janina","nazwisko":"Zursynowa"},
+     {"id":"4","imie":"Bonifacy","nazwisko":"Miejski"}
+    ]
+  ) 
+
+
   const executeQuery = () => {
     console.log('executing query...')
     //let apiUrl = `https://geocode.xyz/${position.coords.latitude},${position.coords.longitude}`
     let apiUrl = `https://pmat.macforsoft.pl/api/sqlres`
     const params = {
-                    query: 'select * from autor'
+                    query: newNote.value
     }
     
     axios.get(apiUrl,{params}).then( result => {
-      console.log('result:',result.data)
+      
+      let  resData = result.data,
+           arrJSON = []
+
+      try {
+          arrJSON = typeof resData != 'object' ? JSON.parse(resData) : resData
+
+          if (arrJSON.length==0) {      
+          sqlData.value = [{"Info":"brak danych"}]
+          }
+          else  sqlData.value = resData
+      }
+      catch  {
+        sqlData.value = [{"Błąd":resData}]  
+      }
+      
     }).catch( err => {
-      console.log('err:',err)
+      sqlData.value = [{"Błąd":err}]
     })
   }
+
+  const fiilTable = () => {
+    
+  }
+
+  const sqlResultFields = computed ( () => {
+    let firstRow = sqlData.value[0],
+        resultFields = []
+    for (const item in firstRow) { 
+      console.log(item)
+      resultFields.push(item)
+    }    
+
+    return resultFields
+  })
 
   const addNote = () => {
     storeNotes.addNote(newNote.value)
@@ -120,3 +181,9 @@
   //useWatchCharacters(newNote)
 
 </script>
+<style>
+.table-container {
+  max-height: 150px;
+  overflow-y: auto;
+}
+</style>
