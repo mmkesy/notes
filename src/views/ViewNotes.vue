@@ -24,29 +24,12 @@
       </template>
     </AddEditNote>
 
-    <div class="table-container">
-      <table class="table is-fullwidth is-scrollable has-sticky-header">
-        <!-- Your table content -->
-        
-        <thead>
-          <tr>
-            <th v-for="field in sqlResultFields" :key="field">
-              {{ field }}
-            </th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <tr v-for="item in sqlData" :key="item">
-            <td v-for="key in item">
-              {{ key }}
-            </td>
-          </tr>
-        </tbody>
-      
-      </table>
-    </div>
-
+    <Query
+      :sqlResultFields="storeOracle.getFields"
+      :sqlData="storeOracle.data"
+    >
+    </Query>
+    
     <progress
       v-if="!storeNotes.notesLoaded" 
       class="progress is-large is-info"
@@ -81,7 +64,9 @@
   import Note from '@/components/Notes/Note.vue'
   import AddEditNote from '@/components/Notes/AddEditNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
-  import axios from 'axios' 
+  import axios from 'axios'
+  import Query from '@/components/Notes/Query.vue' 
+  import { useStoreOracle } from '@/stores/storeOracle'
   //import { useWatchCharacters } from '@/use/useWatchCharacters'
 
 /*
@@ -89,7 +74,7 @@
 */
 
   const storeNotes = useStoreNotes()
-
+  const storeOracle = useStoreOracle()
 
 /*
   notes
@@ -98,59 +83,13 @@
   const newNote = ref('')
   const addEditNoteRef = ref(null)
 
-  const sqlData = ref(
-    [{"id":"1","imie":"Zygmunt","nazwisko":"Bajkowski"},
-     {"id":"2","imie":"Kunegunda","nazwisko":"Esflubowska"},
-     {"id":"3","imie":"Janina","nazwisko":"Zursynowa"},
-     {"id":"4","imie":"Bonifacy","nazwisko":"Miejski"}
-    ]
-  ) 
-
 
   const executeQuery = () => {
-    console.log('executing query...')
-    //let apiUrl = `https://geocode.xyz/${position.coords.latitude},${position.coords.longitude}`
-    let apiUrl = `https://pmat.macforsoft.pl/api/sqlres`
-    const params = {
-                    query: newNote.value
-    }
-    
-    axios.get(apiUrl,{params}).then( result => {
-      
-      let  resData = result.data,
-           arrJSON = []
 
-      try {
-          arrJSON = typeof resData != 'object' ? JSON.parse(resData) : resData
-
-          if (arrJSON.length==0) {      
-          sqlData.value = [{"Info":"brak danych"}]
-          }
-          else  sqlData.value = resData
-      }
-      catch  {
-        sqlData.value = [{"Błąd":resData}]  
-      }
-      
-    }).catch( err => {
-      sqlData.value = [{"Błąd":err}]
-    })
+    storeOracle.setQueryStmt(newNote.value)
+    storeOracle.executeQuery()
   }
 
-  const fiilTable = () => {
-    
-  }
-
-  const sqlResultFields = computed ( () => {
-    let firstRow = sqlData.value[0],
-        resultFields = []
-    for (const item in firstRow) { 
-      console.log(item)
-      resultFields.push(item)
-    }    
-
-    return resultFields
-  })
 
   const addNote = () => {
     storeNotes.addNote(newNote.value)
@@ -165,6 +104,7 @@
   }
 
   onMounted(() => {
+    storeOracle.clear()
     console.log('ViewNotes onMounted..')
   })
 
@@ -181,9 +121,3 @@
   //useWatchCharacters(newNote)
 
 </script>
-<style>
-.table-container {
-  max-height: 150px;
-  overflow-y: auto;
-}
-</style>

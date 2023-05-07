@@ -13,18 +13,30 @@
           @click="$router.back()"
           class="button is-light has-background-grey-lighter mr-100"
         >
-          Cancel
+          Anuluj
         </button>
         <button
           @click="handleSaveClicked"
           class="button is-link has-background-primary "
           :disabled="!noteContent"
         >
-          Save Note
+          Zapisz
+        </button>
+        <button
+          @click="executeQuery"
+          class="button is-link has-background-info "
+          :disabled="!noteContent"
+        >
+          Wykonaj
         </button>
       </div>
      </template>
     </AddEditNote>
+    <Query
+      :sqlResultFields="storeOracle.getFields"
+      :sqlData="storeOracle.data"
+    >
+    </Query>
   </div>
 </template>
 
@@ -34,10 +46,12 @@
   imports
 */
 
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import AddEditNote from '@/components/Notes/AddEditNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
+  import Query from '@/components/Notes/Query.vue' 
+  import { useStoreOracle } from '@/stores/storeOracle'
 
 /*
   router
@@ -51,6 +65,7 @@
 */
 
   const storeNotes = useStoreNotes()
+  const storeOracle = useStoreOracle()
 
 /*
   note
@@ -68,5 +83,19 @@
     storeNotes.updateNote(route.params.id, noteContent.value)
     router.push('/')
   }
+
+
+  const executeQuery = () => {
+    storeOracle.setQueryStmt(noteContent.value)
+    storeOracle.executeQuery()
+  }
+
+/*
+  hooks
+*/  
+onMounted(() => {
+    storeOracle.clear()
+    console.log('ViewEditNote onMounted..')
+  })
 
 </script>
