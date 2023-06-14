@@ -4,15 +4,15 @@
       <!-- Your table content -->        
       <thead>
         <tr>
-          <th v-for="field in sqlResultFields" :key="field">
+          <th v-for="(field,n) in sqlResultFields" :key="n">
             {{ field }}
           </th>
         </tr>
       </thead>
       
       <tbody>
-        <tr v-for="item in sqlData" :key="item">
-          <td v-for="key in item">
+        <tr v-for="(item,n) in sqlData" :key="n">
+          <td v-for="(key,n) in item" :key="n">
             {{ key }}
           </td>
         </tr>
