@@ -2,7 +2,7 @@
   <div class="notes">
 
     <AddEditNote
-      v-model="newNote"
+      v-model:mQuery="newNote"
       placeholder=""
       ref="addEditNoteRef"
     >

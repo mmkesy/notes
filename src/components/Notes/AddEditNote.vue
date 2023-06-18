@@ -31,7 +31,7 @@
     <div class="field">
       <div class="control">
         <Codemirror
-        :value="modelValue"
+        :value="mQuery"
         :options="cmOptions"
         :placeholder="placeholder"
         ref="cmRef"   
@@ -41,15 +41,23 @@
         >
         </Codemirror>
       </div>  
-    </div>  
-  
     </div>
 
-    <div class="field is-grouped is-grouped-right">
+    <div class="field">
       <div class="control">
-        <slot name="buttons" />
+        <label class="checkbox">
+          <input type="checkbox">
+          Zestaw 
+        </label>
       </div>
-    </div>  
+    </div>
+
+  </div>
+  <div class="field is-grouped is-grouped-right">
+    <div class="control">
+      <slot name="buttons" />
+    </div>
+  </div>  
 </template>
 
 <script setup>
@@ -63,7 +71,7 @@
 
 
   const props = defineProps({
-    modelValue: {
+    mQuery: {
       type: String,
       required: true
     },
@@ -81,7 +89,7 @@
   })
 
 
-  const emit = defineEmits(['update:modelValue'])
+  const emit = defineEmits(['update:mQuery'])
 
   
 
@@ -98,7 +106,7 @@
 
   const onChange = (val, cm) => {
         //console.log(val)
-        emit('update:modelValue', cm.getValue())
+        emit('update:mQuery', cm.getValue())
   }
 
   const onInput = (val) => {

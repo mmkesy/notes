@@ -1,7 +1,7 @@
 <template>
   <div class="edit-note">
     <AddEditNote
-      v-model="noteContent"
+      v-model:mQuery="noteContent"
       bgColor="info"
       placeholder="Edit note"
       label="pytanie 1"
